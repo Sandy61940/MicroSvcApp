@@ -9,3 +9,12 @@ USER_AGENT=Mozilla/5.0
 GET_URL=http://product/products/webAuthenticateController
 POST_URL=http://product/products/webCartController
 POST_PARAMS=sqlQuery=1
+##################################################################################################
+#************************************** Jdbc Configuration ***************************************#
+##################################################################################################
+DB_DRIVER_CLASS=com.mysql.jdbc.Driver
+DB_JDBC_URL=jdbc:mysql://localhost:3306/webstoredb
+DB_USER_NAME=root
+DB_PASSWORD=root
+DB_LOCK_QUERY=LOCK tables checkout_quote READ
+DB_UNLOCK_QUERY=UNLOCK TABLES
