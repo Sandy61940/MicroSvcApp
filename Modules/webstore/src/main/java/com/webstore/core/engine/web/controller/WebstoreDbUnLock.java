@@ -1,11 +1,19 @@
 package com.webstore.core.engine.web.controller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.webstore.core.engine.web.datasource.DataBaseUtil;
+import com.webstore.core.engine.web.props.EnginePropertyReader;
 
 /**
  * Servlet implementation class WebstoreDbLock
@@ -19,14 +27,29 @@ public class WebstoreDbUnLock extends HttpServlet {
      */
     public WebstoreDbUnLock() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("webstore table lock request arrived");
+			try {
+				EnginePropertyReader engineProps = new EnginePropertyReader();
+				Properties enginePropsObj = engineProps.getEnginePropsObj();
+				String driverClass = enginePropsObj.getProperty("DB_DRIVER_CLASS");
+				String jdbcUrl = enginePropsObj.getProperty("DB_JDBC_URL");
+				String userName = enginePropsObj.getProperty("DB_USER_NAME");
+				String password = enginePropsObj.getProperty("DB_PASSWORD");
+				String query = enginePropsObj.getProperty("DB_UNLOCK_QUERY");
+				DataBaseUtil baseUtil = new DataBaseUtil();
+				Connection connection = baseUtil.getNormalConnection(driverClass, jdbcUrl, userName, password);
+				Statement stmt = baseUtil.getStatment(connection);
+				stmt.execute(query);
+				System.out.println("webstore database table ["+query+"] is  unlocked");
+			} catch (SQLException e) {
+				System.out.println("sql exction " + e);
+			}
 		response.getWriter().append("webstore database un-locked request received in WebstoreDbUnLock servlet").append(request.getContextPath());
 	}
 
