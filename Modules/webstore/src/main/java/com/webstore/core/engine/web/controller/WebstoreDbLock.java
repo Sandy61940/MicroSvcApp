@@ -42,6 +42,7 @@ public class WebstoreDbLock extends HttpServlet {
 				String userName = enginePropsObj.getProperty("DB_USER_NAME");
 				String password = enginePropsObj.getProperty("DB_PASSWORD");
 				String query = enginePropsObj.getProperty("DB_LOCK_QUERY");
+				System.out.println("DB details: "+driverClass+" "+jdbcUrl+" "+userName+" "+password+" "+query);
 				DataBaseUtil baseUtil = new DataBaseUtil();
 				Connection connection = baseUtil.getNormalConnection(driverClass, jdbcUrl, userName, password);
 				Statement stmt = baseUtil.getStatment(connection);
